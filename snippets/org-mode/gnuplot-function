@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: gnuplot-function
+# key: gnuplot-function
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# condition: t
+# --
+
+#+begin_src gnuplot :file $1.png :results file
+  set terminal pngcairo enhanced font "Verdana,25" size 1200,1000
+  set output '$1.png'
+  set title "Reliability R(t) = e^{-λt}"
+  set xlabel "Time (hours)"
+  set ylabel "Reliability R(t)"
+  set grid
+  mttf = 10.0
+  lambda = 1.0/mttf
+  plot [0:24] exp(-lambda*x) with lines title sprintf("λ = %.1f", lambda)
+#+end_src

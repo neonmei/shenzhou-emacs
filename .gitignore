@@ -1,0 +1,12 @@
+/.local/
+.agent-shell/
+.cache
+.local
+agent
+elpa/
+tree-sitter/
+/custom.el
+*.elc
+AGENTS.md
+CLAUDE.*md
+templates/

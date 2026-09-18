@@ -1,0 +1,36 @@
+# -*- mode: snippet -*-
+# name: mermaid-architecture
+# key: mmdc-arch
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src mermaid :file $1.png :cmdline "--iconPacks @iconify-json/logos --iconPacks @iconify-json/devicon --iconPacksNamesAndUrls aws#https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/refs/heads/main/dist/aws-icons-mermaid.json"
+
+ architecture-beta
+    service otel_vendor(internet)[Vendor]
+    service elb(logos:aws-elb)[Protected Ingress] in cloud
+
+    service user(internet)[User]
+
+    group cloud(cloud)[Cloud]
+    group eks(logos:aws-eks)[Cluster] in cloud
+    group node1(logos:aws-ec2)[EKS Node 1] in eks
+    group node2(logos:aws-ec2)[EKS Node 2] in eks
+
+    service pod1(logos:aws-ec2)[Pod] in node1
+    service pod2(logos:aws-ec2)[Pod2] in node2
+
+    service otel1(devicon:opentelemetry)[Agent 1] in node1
+    service otel2(devicon:opentelemetry)[Agent 1] in node2
+
+
+    user:R -- L:elb
+    elb:R -- L:pod1
+    elb:R -- L:pod2
+
+    pod1:R -- L:otel1
+    pod2:R -- L:otel2
+
+    otel1:R -- L:otel_vendor
+    otel2:R -- L:otel_vendor
+#+end_src

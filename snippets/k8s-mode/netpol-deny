@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: netpol-deny
+# key: netpol-deny
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${1:deny-pod-traffic}
+  namespace: ${2:default}
+spec:
+  podSelector:
+    matchLabels:
+      app: ${3:myapp}
+  policyTypes:
+  - ${4:Egress|Ingress}

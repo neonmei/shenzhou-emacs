@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: k8s-mode
+# key: k8s-mode
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-

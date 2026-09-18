@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: graphviz-empty
+# key: gviz-empty
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src dot :file $1.png
+digraph {
+  graph [ dpi = 300 ];
+  #rankdir = "LR";
+  bgcolor="#181818";
+  edge [color="white"];
+  node [color="#333333" fillcolor="#333333" fontcolor="#e6e6e6" shape="record" style="filled, rounded"];
+
+}
+#+end_src

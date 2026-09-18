@@ -1,0 +1,38 @@
+# -*- mode: snippet -*-
+# name: awslib-basic
+# key: awslib-basic
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src plantuml :exports results :file $1.png
+!include <awslib14/AWSCommon>
+!include <awslib14/Groups/all>
+!include <awslib14/Database/all>
+!include <awslib14/Compute/all>
+!include <awslib14/General/all>
+!include <awslib14/NetworkingContentDelivery/all>
+
+left to right direction
+skinparam linetype ortho
+skinparam dpi 250
+
+User(user1, "User", "")
+
+Route53HostedZone(dns, "whatisthetime.com\nAlias, 1h TTL", "Zone")
+ElasticLoadBalancingApplicationLoadBalancer(elb, "ALB", "Load Balancer")
+
+AutoScalingGroupGroup(asg, "ASG") {
+    AvailabilityZoneGroup(az1,"us-east-1a"){
+      EC2(app1, "timeserver-1", "Main Application")
+    }
+    AvailabilityZoneGroup(az2,"us-east-1b"){
+      EC2(app2, "timeserver-2", "Main Application")
+    }
+}
+
+user1 -> dns: "1. DNS Query"
+user1 --> elb: "2. Query whatisthetime.com"
+
+elb --> app1
+elb --> app2
+#+end_src

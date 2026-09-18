@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: mermaid-architecture-aws
+# key: mmdc-aws
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src mermaid :file $1.png :cmdline "--iconPacksNamesAndUrls aws#https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/refs/heads/main/dist/aws-icons-mermaid.json"
+ architecture-beta
+    service internet(aws:internet)[Internet]
+
+    group cloud(aws:aws-cloud)[Cloud]
+    group vpc(aws:vpc)[VPC] in cloud
+    group isubnet(aws:private-subnet)[Private Subnet] in vpc
+    group esubnet(aws:public-subnet)[Public Subnet] in vpc
+
+    service lambda(aws:lambda-lambda-function)[Lambda] in isubnet
+    service natgw(aws:vpc-nat-gateway)[NatGW] in esubnet
+    service igw(aws:vpc-internet-gateway)[IGW] in cloud
+
+    lambda:R -- L:natgw
+    natgw:R -- L:igw
+    igw:R -- L:internet
+#+end_src

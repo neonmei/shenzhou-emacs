@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: tkntrun
+# key: tkntrun
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: run-$1
+spec:
+  taskRef:
+    name: ${1:build-test-deploy-app}

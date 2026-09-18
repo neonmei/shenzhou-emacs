@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: pumlseq
+# key: pumlseq
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src plantuml :exports results :file $1.png
+!theme spacelab
+skinparam dpi 250
+Client -> Mail: Sends an email
+Listener --> Mail: Fetch unlabeled email
+Listener --> Service: API Request
+Service --> Listener: 200 Response
+Listener --> Mail: Label mail as "processed"
+#+end_src

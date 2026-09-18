@@ -1,0 +1,43 @@
+# -*- mode: snippet -*-
+# name: pumlawslabs-basic
+# key: pumlawslabs-basic
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src plantuml :exports results :file $1.png
+'!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist
+!define AWSPuml /home/neonmei/kaifa/git/aws-icons-for-plantuml/dist
+!include AWSPuml/AWSCommon.puml
+!include AWSPuml/AWSSimplified.puml
+!include AWSPuml/General/all.puml
+!include AWSPuml/Compute/all.puml
+!include AWSPuml/Database/all.puml
+!include AWSPuml/NetworkingContentDelivery/all.puml
+!include AWSPuml/Storage/all.puml
+
+title Dynamic and static separation
+left to right direction
+'skinparam linetype ortho
+skinparam dpi 250
+
+User(user,"User","")
+Route53(route53,"route53","")
+
+ElasticLoadBalancingApplicationLoadBalancer(elb, "ELB","")
+EC2(ec2,"Server","")
+
+CloudFront(cf,"CloudFront","")
+SimpleStorageServiceBucket(s3,"Bucket","")
+DynamoDB(ddb,"DynamoDB","")
+
+user -> route53
+user --> elb: api.example.com
+user --> cf: static.example.com
+
+cf --> s3: static content
+elb --> ec2: dynamic content
+
+ec2 --> ddb
+ec2 -> s3: computes and uploads
+#+end_src
+

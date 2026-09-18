@@ -1,0 +1,36 @@
+# -*- mode: snippet -*-
+# name: awslib14 (all categories)
+# key: awslib14a
+# --
+!include <awslib14/AWSCommon>
+!include <awslib14/AWSSimplified>
+!include <awslib14/Analytics/all>
+!include <awslib14/ApplicationIntegration/all>
+!include <awslib14/Blockchain/all>
+!include <awslib14/BusinessApplications/all>
+!include <awslib14/CloudFinancialManagement/all>
+!include <awslib14/Compute/all>
+!include <awslib14/Containers/all>
+!include <awslib14/CustomerEnablement/all>
+!include <awslib14/Database/all>
+!include <awslib14/DeveloperTools/all>
+!include <awslib14/EndUserComputing/all>
+!include <awslib14/FrontEndWebMobile/all>
+!include <awslib14/GameTech/all>
+!include <awslib14/General/all>
+!include <awslib14/GroupIcons/all>
+!include <awslib14/Groups/all>
+!include <awslib14/InternetOfThings/all>
+!include <awslib14/MachineLearning/all>
+!include <awslib14/ManagementGovernance/all>
+!include <awslib14/MediaServices/all>
+!include <awslib14/MigrationTransfer/all>
+!include <awslib14/NetworkingContentDelivery/all>
+!include <awslib14/QuantumTechnologies/all>
+!include <awslib14/Robotics/all>
+!include <awslib14/Satellite/all>
+!include <awslib14/SecurityIdentityCompliance/all>
+!include <awslib14/Serverless/all>
+!include <awslib14/Storage/all>
+!include <awslib14/VRAR/all>
+$0

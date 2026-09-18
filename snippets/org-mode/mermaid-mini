@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: mermaid-architecture-mini
+# key: mmdc-mini
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src mermaid :file $1.png :cmdline "--iconPacks @iconify-json/logos --iconPacks @iconify-json/devicon"
+ architecture-beta
+    service s3(logos:aws-s3)[S3]
+    service sns(logos:aws-sns)[SNS]
+    service sqs(logos:aws-sqs)[SQS]
+    service lambda(logos:aws-lambda)[Lambda]
+
+    s3:R -- L:sns
+    sns:R -- L:sqs
+    sqs:R -- L:lambda
+#+end_src
+

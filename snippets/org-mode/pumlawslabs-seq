@@ -1,0 +1,53 @@
+# -*- mode: snippet -*-
+# name: pumlawslabs-seq
+# key: pumlawslabs-seq
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src plantuml :exports results :file $1.png
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist
+!include AWSPuml/AWSCommon.puml
+!include AWSPuml/AWSSimplified.puml
+!include AWSPuml/ApplicationIntegration/APIGateway.puml
+!include AWSPuml/Compute/Lambda.puml
+!include AWSPuml/Storage/SimpleStorageService.puml
+!include AWSPuml/General/User.puml
+
+title $2
+skinparam dpi 250
+hide footbox
+skinparam responseMessageBelowArrow true
+
+participant "$UserIMG()\nUser" as user
+participant "$APIGatewayIMG()\nAPI Gateway" as apigw
+participant "$LambdaIMG()\nLambda" as lambda
+participant "$SimpleStorageServiceIMG()\nS3" as s3
+
+== Request Presigned URL ==
+
+user -> apigw : POST /upload-request\n{filename, contentType}
+activate apigw
+
+apigw -> lambda : Invoke function
+activate lambda
+
+lambda -> s3 : Generate presigned URL\n(PutObject)
+activate s3
+s3 --> lambda : Presigned URL
+deactivate s3
+
+lambda --> apigw : {presignedUrl, key}
+deactivate lambda
+
+apigw --> user : 200 OK\n{presignedUrl, key}
+deactivate apigw
+
+== Upload File to S3 ==
+
+user -> s3 : PUT presignedUrl\n[file binary data]
+activate s3
+s3 --> user : 200 OK
+deactivate s3
+
+#+end_src
+

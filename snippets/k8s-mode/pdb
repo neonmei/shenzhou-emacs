@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: pdb
+# key: pdb
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: $1-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: $1

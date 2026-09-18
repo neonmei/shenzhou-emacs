@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: bigo
+# key: bigo
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+$\mathcal{O}($1)$

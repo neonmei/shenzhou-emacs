@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: svc-lb
+# key: svc-lb
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $1-svc
+  labels:
+    app: ${1:myapp}
+spec:
+  ports:
+  - port: ${2:9999}
+    protocol: TCP
+    targetPort: $2
+  selector:
+    app: $1
+  type: LoadBalancer

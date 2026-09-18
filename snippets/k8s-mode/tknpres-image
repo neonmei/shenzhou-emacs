@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: tknpres-image
+# key: tknpres-image
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: ${1:alpine}-image
+spec:
+  type: image
+  params:
+    - name: url
+      value: docker.io/library/$1:latest

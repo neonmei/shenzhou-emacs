@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name:
+# key: trigger-key
+# condition: t
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: $1
+spec:
+  pipelineRef:
+    name: $2
+  resources:
+    - name: git
+      resourceRef:
+        name: ${3:example-git}

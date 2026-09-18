@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+begin_verse block
+# key: <v
+# uuid: verse
+# --
+#+begin_verse
+$0
+#+end_verse

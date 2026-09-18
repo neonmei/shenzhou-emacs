@@ -1,0 +1,32 @@
+# -*- mode: snippet -*-
+# name: iam-policy-data
+# key: iam-policy-data
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+data "aws_iam_policy_document" "$1" {
+  statement {
+    sid     = "AllowS3Models"
+    effect  = "Allow"
+    actions = ["s3:GetObject", "s3:List*"]
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket_name}",
+      "arn:aws:s3:::${var.s3_bucket_name}/*",
+    ]
+  }
+
+  statement {
+    sid    = "SQS"
+    effect = "Allow"
+    actions = [
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl",
+      "sqs:ReceiveMessage",
+      "sqs:SendMessage",
+    ]
+    resources = [
+      module.sqs.queue_arn
+    ]
+  }
+}

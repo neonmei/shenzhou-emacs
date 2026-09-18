@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: limitsc
+# key: limits
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: $1
+spec:
+  limits:
+    - default:
+        memory: 512Mi
+        cpu: 1
+      defaultRequest:
+        memory: 256Mi
+        cpu: 0.5
+      max:
+        cpu: 2
+        memory: 2Gi
+      min:
+        cpu: 1m
+      type: Container
+

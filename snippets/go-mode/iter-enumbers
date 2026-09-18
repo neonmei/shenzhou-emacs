@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: iter-enumbers
+# key: iter-enumbers
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+func GenNumbers(target int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		for n := range target {
+			if !yield(n) {
+				return
+			}
+		}
+	}
+}

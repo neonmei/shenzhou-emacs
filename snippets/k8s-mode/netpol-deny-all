@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: netpol-deny-all
+# key: netpol-deny-all
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${1:deny-all}
+  namespace: ${2:default}
+spec:
+  # denies all at namespace level
+  podSelector: {}
+  policyTypes:
+  - ${3:Egress|Ingress}

@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: tknpres-git
+# key: tknpres-git
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: $1-git
+spec:
+  type: git
+  params:
+    - name: revision
+      value: ${2:main}
+    - name: url
+      value: https://github.com/GoogleContainerTools/$1
+    # Defaults:
+    - name: sslVerify
+      value: true
+    - name: depth
+      value: '1'

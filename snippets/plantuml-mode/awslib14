@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: awslib14 (all)
+# key: awslib14
+# --
+!include <awslib14/AWSCommon>
+!include <awslib14/AWSSimplified>
+$0

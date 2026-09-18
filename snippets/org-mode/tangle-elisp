@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: tangle-elisp
+# key: tangle-elisp
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src emacs-lisp :tangle yes
+$1
+#+end_src

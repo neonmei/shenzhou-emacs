@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: svc-node
+# key: svc-node
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $1-svc
+spec:
+  type: NodePort
+  selector:
+    app: $1
+  ports:
+      # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
+    - port: ${2:80}
+      targetPort: $2
+      # Optional field
+      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
+      nodePort: ${3:9999}

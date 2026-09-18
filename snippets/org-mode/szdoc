@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: szdoc
+# key: szdoc
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+startup: inlineimages
+#+startup: latexpreview

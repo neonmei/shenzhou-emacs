@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: csr
+# key: csr
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: $1
+spec:
+  groups:
+    - ${2:system:authenticated}
+  request: $3
+  usages:
+    - digital signature
+    - key encipherment
+    - client auth
+  signerName: ${4:kubernetes.io/kube-apiserver-client}

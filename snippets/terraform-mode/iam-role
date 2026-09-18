@@ -1,0 +1,39 @@
+# -*- mode: snippet -*-
+# name: eks-iam-role-pod-identity
+# key: eks-role
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+resource "aws_iam_role" "$1" {
+  tags = merge(var.extra_tags, local.default_tags)
+  name = "$1-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sts:TagSession",
+          "sts:AssumeRole"
+        ]
+        Effect = "Allow"
+        Principal = {
+          Service = "pods.eks.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policies_exclusive" "$1" {
+  role_name    = aws_iam_role.$1.name
+  policy_names = [aws_iam_role_policy.$2.name]
+}
+
+resource "aws_eks_pod_identity_association" "$1" {
+  cluster_name    = var.cluster_name
+  namespace       = var.cluster_ns
+  service_account = var.cluster_sa_name
+  role_arn        = aws_iam_role.$1.arn
+  tags            = merge(var.extra_tags, local.default_tags)
+}

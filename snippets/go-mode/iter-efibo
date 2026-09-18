@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: iter-efibo
+# key: iter-efibo
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+func genFib() iter.Seq[int] {
+    return func(yield func(int) bool) {
+        a, b := 1, 1
+        for {
+            if !yield(a) {
+                return
+            }
+            a, b = b, a+b
+        }
+    }
+}

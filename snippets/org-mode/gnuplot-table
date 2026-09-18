@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: gnuplot-table
+# key: gnuplot-table
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# condition: t
+# --
+
+#+tblname: xtics
+| Date      | Distance |
+| 8/25/2010 |      3.2 |
+| 8/29/2010 |      3.0 |
+| 9/1/2010  |      2.4 |
+| 9/2/2010  |      2.5 |
+| 9/5/2010  |      2.3 |
+| 9//2010   |      2.0 |
+
+
+#+begin_src gnuplot :var data=xtics :exports code :file $1.png
+  reset
+  set title "Running Stats"
+  set xlabel "Date"
+  set xtics rotate by -45
+  set yrange [1:5]
+  set ylabel "Distance (mi)"
+  plot data u 2:xticlabels(1) w lp lw 2 notitle
+#+end_src
+

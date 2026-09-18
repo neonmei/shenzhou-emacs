@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: rca-action-item
+# key: rca-ai
+# --
+** TODO ${1:Action Item Title}
+DEADLINE: <${2:`(format-time-string "%Y-%m-%d %a")`}>
+:PROPERTIES:
+:Owner:    ${3:TBD}
+:Type:     ${4:$$(yas-choose-value '("mitigate" "prevent" "process" "other"))}
+:Ticket:   ${5:ticket-number}
+:END:
+$0

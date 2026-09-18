@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: graphviz-example
+# key: gviz-example
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+#+begin_src dot :exports results :file deploy_graph.png :exports results :cmdline -Kdot -Tpng
+digraph {
+  #rankdir = "LR";
+  graph [ dpi = 250 ];
+
+  // Labels
+  job_checkout [label = "Git clone";];
+  job_quality [label = "Linting and Quality";];
+  job_infracost [label = "FinOps Tooling";];
+  job_slack [style = "dashed";label = "Slack notification";];
+  terraform_apply [style = "dashed";label = "Terraform apply";];
+  deploy_approval [style = "dashed";label = "Deploy Approval";];
+
+  // Automatic
+  job_checkout -> job_quality -> job_infracost -> deploy_approval;
+
+  // Reviewed
+  deploy_approval -> job_slack -> terraform_apply;
+}
+#+end_src

@@ -1,0 +1,6 @@
+#+TITLE: Shenzhou Emacs Config
+#+AUTHOR: neonmei
+
+[[./assets/banner.png]]
+
+This is part of my emacs config that splitted off my doom emacs one.

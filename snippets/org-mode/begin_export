@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+begin_export ... block
+# key: <E
+# uuid: export
+# --
+#+begin_export ${1:backend}
+$0
+#+end_export

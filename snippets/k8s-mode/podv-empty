@@ -1,0 +1,50 @@
+# -*- mode: snippet -*-
+# name: podv-empty
+# key: podv-empty
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+# -*- mode: k8s -*-
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: $1
+spec:
+  containers:
+    - name: $1-container
+      image: ${2:alpine}
+      args:
+        - sleep
+        - '600'
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          cpu: 50m
+          memory: 10M
+        limits:
+          cpu: 100m
+          memory: 300M
+      ports:
+        - containerPort: 8888
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 8888
+        periodSeconds: 2
+        initialDelaySeconds: 2
+        failureThreshold: 3
+        successThreshold: 1
+      livenessProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/healthy
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      volumeMounts:
+        - mountPath: ${3:/data}
+          name: cache-volume
+          readOnly: false
+  volumes:
+    - name: cache-volume
+      emptyDir: {}

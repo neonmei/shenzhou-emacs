@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: iam-policy-json
+# key: iam-policy-json
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region nil))
+# --
+
+resource "aws_iam_policy" "$1" {
+  name        = "$1-role"
+  description = "$2"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "sts:AssumeRole"
+        Resource = "arn:aws:iam::000000000000:role/CrossAccountRole"
+      }
+    ]
+  })
+}
