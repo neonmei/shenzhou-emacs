@@ -91,7 +91,11 @@
     sz-editing               ; general editing
     sz-meow                  ; meow + leader wiring
     ;; lang/
-    sz-langs                 ; treesit, eglot, flymake, misc modes, python
+    sz-langs                 ; treesit, flymake, misc modes
+    sz-eglot                 ; eglot, lsp-booster, eldoc-box
+    sz-python
+    sz-nix
+    sz-rust
     sz-go
     sz-terraform
     sz-puml
