@@ -259,8 +259,32 @@ The running clock, if any, is shown above the table as a link to its task."
   (add-to-list 'dashboard-item-generators '(gtd-next   . sz/dashboard-insert-gtd-next))
   (add-to-list 'dashboard-item-generators '(gtd-inbox  . sz/dashboard-insert-gtd-inbox))
   (add-to-list 'dashboard-item-generators '(clocktable . sz/dashboard-insert-clocktable))
+  (defvar sz-dashboard-banner-alist
+    '((kusanagi . "assets/banner_teal.png"))
+    "Alist mapping a theme symbol to its banner image.
+Paths are relative to `user-emacs-directory'.")
+
+  (defvar sz-dashboard-banner-default "assets/banner_pink.png"
+    "Banner image for themes absent from `sz-dashboard-banner-alist'.")
+
+  (defun sz/dashboard-set-banner (&optional theme)
+    "Point `dashboard-startup-banner' at the image for THEME.
+THEME defaults to the theme currently enabled.  The dashboard is
+re-rendered when it is on screen."
+    (interactive)
+    (let ((theme (or theme (car custom-enabled-themes))))
+      (setq dashboard-startup-banner
+            (expand-file-name (or (alist-get theme sz-dashboard-banner-alist)
+                                  sz-dashboard-banner-default)
+                              user-emacs-directory)))
+    (when-let* ((win (get-buffer-window dashboard-buffer-name)))
+      (with-selected-window win
+        (dashboard-insert-startupify-lists t))))
+
+  (add-hook 'circadian-after-load-theme-hook #'sz/dashboard-set-banner)
+  (sz/dashboard-set-banner)
+
   (setq dashboard-banner-logo-title "Welcome to Shenzhou"
-        dashboard-startup-banner (expand-file-name "assets/banner.png" user-emacs-directory)
         dashboard-startup-banner-height 100
         dashboard-center-content t
         dashboard-vertically-center-content t
