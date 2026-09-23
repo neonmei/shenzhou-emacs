@@ -24,6 +24,7 @@
     (agent-shell-kimi-default-model-id "kimi-code/k3")
     (agent-shell-anthropic-default-model-id "opus")
     (agent-shell-session-restore-verbosity 'full)
+    (agent-shell-show-cost-indicator t)
 ;   (agent-shell-prefer-viewport-interaction t)
 )
 
