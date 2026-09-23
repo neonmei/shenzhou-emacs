@@ -108,43 +108,80 @@ them out to the line start first.  Priority colors come from the global
 
   (add-hook 'dashboard-mode-hook #'sz/dashboard-org-modern)
 
+  (defun sz/dashboard-agenda-pomodoro (file point)
+    "Start an `org-pomodoro' on the heading at POINT in FILE."
+    (require 'org-pomodoro)
+    (with-current-buffer (find-file-noselect file)
+      (save-excursion
+        (goto-char point)
+        (org-pomodoro)))
+    (dashboard-refresh-buffer))
+
+  (defun sz/dashboard-agenda-button (tag action &optional help)
+    "Insert a dashboard item button showing TAG that runs ACTION.
+HELP is the tooltip."
+    (widget-create 'item
+                   :tag tag
+                   :action action
+                   :button-face 'dashboard-items-face
+                   :mouse-face 'highlight
+                   :help-echo help
+                   :button-prefix ""
+                   :button-suffix ""
+                   :format "%[%t%]"))
+
+  (defun sz/dashboard-insert-agenda-item (el)
+    "Insert agenda entry EL as a line led by a pomodoro button.
+The tomato starts a pomodoro on the task; the rest of the line, from
+the priority badge on, visits it."
+    (let ((file (get-text-property 0 'dashboard-agenda-file el))
+          (loc (get-text-property 0 'dashboard-agenda-loc el)))
+      (insert "\n" (spaces-string (or standard-indent tab-width 4)))
+      (sz/dashboard-agenda-button
+       "🍅"
+       (lambda (&rest _) (sz/dashboard-agenda-pomodoro file loc))
+       "Start a pomodoro on this task")
+      (insert " ")
+      (sz/dashboard-agenda-button
+       (concat (sz/dashboard-agenda-priority-badge el) el)
+       (lambda (&rest _) (funcall dashboard-agenda-action file loc)))))
+
+  (defun sz/dashboard-insert-agenda-items (items list-size)
+    "Insert up to LIST-SIZE agenda ITEMS; return non-nil when there were any."
+    (if items
+        (progn (mapc #'sz/dashboard-insert-agenda-item
+                     (dashboard-subseq items list-size))
+               t)
+      (insert (propertize "\n    --- No items ---" 'face 'dashboard-no-items-face))
+      nil))
+
   (defun sz/dashboard-insert-gtd-next (list-size)
     "Insert up to LIST-SIZE NEXT actions into the dashboard, sorted by priority."
     (require 'org-agenda)
-    (let ((dashboard-match-agenda-entry "TODO=\"NEXT\"")
-          (dashboard-filter-agenda-entry #'dashboard-filter-agenda-by-todo)
-          (dashboard-agenda-prefix-format " %-12:c ")
-          (dashboard-agenda-sort-strategy '(priority-up)))
-      (dashboard-insert-section
-       "NEXT Actions:"
-       (sort (dashboard-get-agenda) (dashboard-agenda--sort-function))
-       list-size
-       'gtd-next
-       "n"
-       `(lambda (&rest _)
-          (let ((file  (get-text-property 0 'dashboard-agenda-file ,el))
-                (point (get-text-property 0 'dashboard-agenda-loc  ,el)))
-            (funcall dashboard-agenda-action file point)))
-       (concat (sz/dashboard-agenda-priority-badge el) el))))
+    (let* ((dashboard-match-agenda-entry "TODO=\"NEXT\"")
+           (dashboard-filter-agenda-entry #'dashboard-filter-agenda-by-todo)
+           (dashboard-agenda-prefix-format " %-12:c ")
+           (dashboard-agenda-sort-strategy '(priority-up))
+           (items (sort (dashboard-get-agenda) (dashboard-agenda--sort-function))))
+      (dashboard-insert-heading "NEXT Actions:"
+                                (and items dashboard-show-shortcuts "n")
+                                (dashboard-heading-icon 'gtd-next))
+      (when (sz/dashboard-insert-agenda-items items list-size)
+        (dashboard-insert-shortcut 'gtd-next "n" "NEXT Actions:"))))
 
   (defun sz/dashboard-insert-gtd-inbox (list-size)
     "Insert up to LIST-SIZE unprocessed Inbox items into the dashboard, sorted by priority."
     (require 'org-agenda)
-    (let ((dashboard-match-agenda-entry "inbox")
-          (dashboard-filter-agenda-entry #'dashboard-filter-agenda-by-todo)
-          (dashboard-agenda-prefix-format " %-12:c ")
-          (dashboard-agenda-sort-strategy '(priority-up)))
-      (dashboard-insert-section
-       "Inbox:"
-       (sort (dashboard-get-agenda) (dashboard-agenda--sort-function))
-       list-size
-       'gtd-inbox
-       "i"
-       `(lambda (&rest _)
-          (let ((file  (get-text-property 0 'dashboard-agenda-file ,el))
-                (point (get-text-property 0 'dashboard-agenda-loc  ,el)))
-            (funcall dashboard-agenda-action file point)))
-       (concat (sz/dashboard-agenda-priority-badge el) el))))
+    (let* ((dashboard-match-agenda-entry "inbox")
+           (dashboard-filter-agenda-entry #'dashboard-filter-agenda-by-todo)
+           (dashboard-agenda-prefix-format " %-12:c ")
+           (dashboard-agenda-sort-strategy '(priority-up))
+           (items (sort (dashboard-get-agenda) (dashboard-agenda--sort-function))))
+      (dashboard-insert-heading "Inbox:"
+                                (and items dashboard-show-shortcuts "i")
+                                (dashboard-heading-icon 'gtd-inbox))
+      (when (sz/dashboard-insert-agenda-items items list-size)
+        (dashboard-insert-shortcut 'gtd-inbox "i" "Inbox:"))))
 
   (defun sz/dashboard-clocktable--entry (path node)
     "Return the clocktable entry for PATH carrying the merged time of NODE.
