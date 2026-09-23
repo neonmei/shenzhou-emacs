@@ -117,7 +117,7 @@
   :commands (neotree-toggle neotree-dir neotree-find neotree-hide
              neo-global--window-exists-p)
   :init
-  (setq neo-theme (if (display-graphic-p) 'nerd-icons 'arrow)
+  (setq neo-theme 'nerd-icons
         neo-smart-open t            ; jump to current file when opening
         neo-window-width 30
         neo-window-fixed-size nil   ; keep manual resize
@@ -146,6 +146,14 @@
   ;; meow-motion's j/k move the tree and SPC remains the leader.
   (with-eval-after-load 'meow
     (add-to-list 'meow-mode-state-list '(neotree-mode . motion))))
+
+(defun sz/neotree-set-theme (&rest _)
+  "Set `neo-theme' from the selected frame's display capabilities."
+  (setq neo-theme (if (display-graphic-p) 'nerd-icons 'arrow)))
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'sz/neotree-set-theme)
+  (add-hook 'elpaca-after-init-hook #'sz/neotree-set-theme))
 
 (defun sz/neotree-project-root ()
   "Project root of the current buffer, or `default-directory'."
