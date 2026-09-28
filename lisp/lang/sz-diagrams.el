@@ -1,7 +1,7 @@
-;;; sz-puml.el --- PlantUML -*- lexical-binding: t; -*-
+;;; sz-diagrams.el --- Diagram languages -*- lexical-binding: t; -*-
 ;;; Commentary:
-;; PlantUML mode with the AWS stdlib keyword list loaded into completion.
-;; Ported from Doom dev.el.
+;; Diagram-as-code modes: PlantUML (with the AWS stdlib keyword list loaded
+;; into completion, ported from Doom dev.el) and D2.
 ;;; Code:
 
 (defvar sz/plantuml-stdlib-keyword-files '("assets/plantuml-stdlib-awslib14.txt")
@@ -36,5 +36,13 @@
   (advice-add 'plantuml-init-once :after #'sz/plantuml-add-stdlib-keywords-a)
   (add-hook 'plantuml-mode-hook #'sz/plantuml-fix-capf))
 
-(provide 'sz-puml)
-;;; sz-puml.el ends here
+(use-package d2-mode
+  :ensure t
+  :mode "\\.\\(d2\\)\\'"
+  :custom
+  (d2-flags '("--layout" "elk" "--theme" "200"))
+  )
+
+
+(provide 'sz-diagrams)
+;;; sz-diagrams.el ends here

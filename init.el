@@ -99,7 +99,7 @@
     sz-r
     sz-go
     sz-terraform
-    sz-puml
+    sz-diagrams
     ;; productivity/
     sz-org                   ; org core, spelling, latex, babel
     sz-vulpea                ; vulpea, journal, citar, org-roam (opt-in)
