@@ -132,7 +132,7 @@
 (with-eval-after-load 'org
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (shell . t) (python . t) (mermaid . t) (gnuplot . t)
+   '((emacs-lisp . t) (shell . t) (python . t) (R . t) (mermaid . t) (gnuplot . t)
      (plantuml . t)))
   (add-hook 'org-babel-after-execute-hook #'org-link-preview-refresh))
 

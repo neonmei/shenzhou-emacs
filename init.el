@@ -96,6 +96,7 @@
     sz-python
     sz-nix
     sz-rust
+    sz-r
     sz-go
     sz-terraform
     sz-puml
