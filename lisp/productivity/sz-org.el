@@ -124,6 +124,9 @@
 (setq org-plantuml-exec-mode 'plantuml)
 (setq org-confirm-babel-evaluate nil)
 
+(setq org-src-preserve-indentation t
+      org-edit-src-content-indentation 0)
+
 (use-package ob-mermaid :ensure t :after org)
 
 (use-package gnuplot :ensure t)
