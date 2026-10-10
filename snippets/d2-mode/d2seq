@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: d2seq
+# key: d2seq
+# --
+
+shape: sequence_diagram
+
+foo.shape: cylinder
+bar.shape: queue
+
+foo -> baz: read
+bar -> baz: write
