@@ -40,8 +40,19 @@
   :ensure t
   :mode "\\.\\(d2\\)\\'"
   :custom
-  (d2-flags '("--layout" "elk" "--theme" "200"))
-  )
+  (d2-flags '("--layout" "elk" "--theme" "200" "--pad" "0"))
+  (d2-location "sz-d2-babel")
+
+  :config
+  ;; Teach ob-d2 to honor a per-block :flags header arg (stock ob-d2 ignores it).
+  (define-advice org-babel-execute:d2 (:around (orig body params) sz/d2-flags)
+    "Append the block's :flags header arg to `d2-flags' for this run."
+    (let* ((extra (cdr (assq :flags params)))
+           (d2-flags (append d2-flags
+                             (cond ((null extra) nil)
+                                   ((listp extra) extra)
+                                   (t (split-string-and-unquote (format "%s" extra)))))))
+      (funcall orig body params))))
 
 
 (provide 'sz-diagrams)
