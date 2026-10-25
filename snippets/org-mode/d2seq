@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: d2seq
+# key: d2seq
+# --
+
+#+begin_src d2 :file $1.svg :flags "--scale 1"
+  shape: sequence_diagram
+
+  ta: Target Allocator
+  col: OpenTelemetry Collectors
+  tgt: Prometheus Endpoints
+
+  Descubrir: {
+    ta -> tgt: Enumerar endpoints/targets
+    ta -> col: Enumerar collectors
+  }
+
+  Agendamiento: {
+    ta -> ta: Asignar objetivos a collectors
+  }
+
+  Recolectar: {
+    col -> ta: Pedir endpoints para scrappear
+    col -> tgt: Scrape o pull de metricas
+  }
+#+end_src
