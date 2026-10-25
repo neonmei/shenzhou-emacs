@@ -168,6 +168,14 @@ DATE property); the journal note is created if it does not exist."
 ;; `M-x vulpea-graph' draws a force-directed graph of the vulpea notes. Every
 ;; knob -- including the graph-fa2 appearance/layout ones -- is a vulpea-graph
 ;; option, applied to graph-fa2 before each render.
+(defun sz/vulpea/graph-sync-colours (&rest _)
+  "Point the vulpea-graph SVG colours at the active theme's faces."
+  (setq vulpea-graph-node-colour  (face-attribute 'font-lock-function-name-face :foreground nil t)
+        vulpea-graph-edge-colour  (face-attribute 'font-lock-keyword-face :foreground nil t)
+        vulpea-graph-label-colour (face-attribute 'default :foreground nil t)))
+
+(add-hook 'enable-theme-functions #'sz/vulpea/graph-sync-colours)
+
 (use-package vulpea-graph
   :ensure (:host github :repo "neonmei/vulpea-graph")
   :after vulpea
@@ -177,19 +185,17 @@ DATE property); the journal note is created if it does not exist."
         vulpea-graph-buffer-name       "*vulpea-graph*" ; buffer the graph renders in
         vulpea-graph-display           'bufferh         ; open: bufferh (default) | bufferv | frame | window
         ;; nodes
-        vulpea-graph-node-colour       "#8653FF"        ; node fill colour, hex
         vulpea-graph-node-radius       5.0              ; node radius, SVG units
         ;; edges
-        vulpea-graph-edge-colour       "#cba6f7"        ; edge stroke colour, hex
         vulpea-graph-edge-width        0.3              ; edge stroke width, SVG units
         ;; labels (only visible when show-labels is on)
         vulpea-graph-show-labels       t                ; draw node titles? (default nil)
         vulpea-graph-label-scope       'connected       ; which nodes get a title: connected (default) | all | headings
-        vulpea-graph-label-colour      "#cdd6f4"        ; label text colour, hex
         vulpea-graph-label-font-size   4              ; label font size; line spacing scales with it
         vulpea-graph-label-wrap-chars  10               ; wrap a label after this many characters
         ;; layout
         vulpea-graph-spacing           80000)           ; edge rest length; bigger = notes farther apart (default 12800 ~=50px)
+  (sz/vulpea/graph-sync-colours)
   ;; optional label font (nil = renderer default):
   ;; (setq vulpea-graph-label-font-family "JetBrains Mono"
   ;;       vulpea-graph-label-font-weight "bold")

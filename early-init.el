@@ -28,7 +28,9 @@
 
 ;; Suppress chrome before the first frame is drawn (no flicker).
 (setq default-frame-alist
-      '((tool-bar-lines . 0)
+      '((background-color . "#060910")
+        (foreground-color . "#C6D2E2")
+        (tool-bar-lines . 0)
         (menu-bar-lines . 0)
         (vertical-scroll-bars . nil)
         (horizontal-scroll-bars . nil)))

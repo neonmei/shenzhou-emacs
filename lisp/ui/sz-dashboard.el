@@ -297,7 +297,9 @@ The running clock, if any, is shown above the table as a link to its task."
   (add-to-list 'dashboard-item-generators '(gtd-inbox  . sz/dashboard-insert-gtd-inbox))
   (add-to-list 'dashboard-item-generators '(clocktable . sz/dashboard-insert-clocktable))
   (defvar sz-dashboard-banner-alist
-    '((kusanagi . "assets/banner_teal.png"))
+    '((blackwall          . "assets/banner_crimson.png")
+      (blackwall-2077     . "assets/banner_crimson.png")
+      (kusanagi           . "assets/banner_teal.png"))
     "Alist mapping a theme symbol to its banner image.
 Paths are relative to `user-emacs-directory'.")
 

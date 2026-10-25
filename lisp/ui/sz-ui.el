@@ -18,14 +18,45 @@
   :ensure t
   :defer t)
 
+(use-package modus-themes
+  :ensure t
+  :demand t
+  :config
+  (modus-themes-define-derivative-command shenzhou-themes select)
+  (modus-themes-define-derivative-command shenzhou-themes list-colors))
+
+(use-package shenzhou-themes
+  :ensure (:host github :repo "neonmei/shenzhou-emacs-themes")
+  :defer t)
+
+(defvar sz-themes
+  '(blackwall blackwall-2077 catppuccin kusanagi)
+  "Themes offered by `sz/theme/switch'.")
+
+(defun sz/theme/declare-family (&rest _)
+  "Load every Blackwall theme without enabling it, so the family is known."
+  (interactive)
+  (dolist (theme '(blackwall blackwall-2077))
+    (unless (custom-theme-p theme)
+      (load-theme theme t t))))
+
+(defun sz/theme/switch (theme)
+  "Disable the enabled themes and load THEME."
+  (interactive
+   (list (intern (completing-read "Theme: " sz-themes nil t))))
+  (sz/theme/declare-family)
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme theme t)
+  (run-hook-with-args 'circadian-after-load-theme-hook theme))
+
 (use-package circadian
   :ensure t
   :demand t
   :config
   (setq calendar-latitude  -34.56351
         calendar-longitude -58.45729
-        circadian-themes '((:sunrise . catppuccin)
-                           (:sunset  . kusanagi)))
+        circadian-themes '((:sunrise . blackwall-2077)
+                           (:sunset  . blackwall)))
   (if after-init-time
       (circadian-setup)
     (add-hook 'elpaca-after-init-hook #'circadian-setup))
@@ -74,11 +105,17 @@ Remote DIRs are only probed over an already-open connection."
   (if (string= (system-name) "Netrunner") 160 110)
   "Default face height (1/10 pt).  Larger on the hi-dpi \"Netrunner\" host.")
 
+(defvar sz-big-font-height (round (* sz-font-height 1.7))
+  "Default face height (1/10 pt) when `sz/big-font-mode' is enabled.")
+
 (defun sz/set-fonts (&rest _)
   "Apply font faces.  Safe to call once a real frame exists."
   (when (display-graphic-p)
     (set-face-attribute 'default nil
-                        :font sz-font-fixed :height sz-font-height :weight 'light)
+                        :font sz-font-fixed :weight 'light
+                        :height (if (bound-and-true-p sz/big-font-mode)
+                                    sz-big-font-height
+                                  sz-font-height))
     (set-face-attribute 'fixed-pitch nil :font sz-font-fixed)
     (set-face-attribute 'variable-pitch nil :font sz-font-variable)))
 
@@ -87,10 +124,9 @@ Remote DIRs are only probed over an already-open connection."
     (add-hook 'server-after-make-frame-hook #'sz/set-fonts)
   (add-hook 'elpaca-after-init-hook #'sz/set-fonts))
 
-;;;; --- Big-font toggle & UI zoom -----------------------------------------------
+(add-hook 'enable-theme-functions #'sz/set-fonts)
 
-(defvar sz-big-font-height (round (* sz-font-height 1.7))
-  "Default face height (1/10 pt) when `sz/big-font-mode' is enabled.")
+;;;; --- Big-font toggle & UI zoom -----------------------------------------------
 
 (define-minor-mode sz/big-font-mode
   "Toggle a larger default font for presentations / pairing (Doom's big-font)."

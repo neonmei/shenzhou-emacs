@@ -53,6 +53,13 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+(defun sz/kind-icon-reset-cache (&rest _)
+  "Drop kind-icon's cached badge colours so they follow the active theme."
+  (when (fboundp 'kind-icon-reset-cache)
+    (kind-icon-reset-cache)))
+
+(add-hook 'enable-theme-functions #'sz/kind-icon-reset-cache)
+
 (use-package cape
   :ensure t
   :init
