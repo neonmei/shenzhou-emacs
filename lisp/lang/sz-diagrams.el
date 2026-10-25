@@ -51,7 +51,12 @@
            (d2-flags (append d2-flags
                              (cond ((null extra) nil)
                                    ((listp extra) extra)
-                                   (t (split-string-and-unquote (format "%s" extra)))))))
+                                   (t (split-string-and-unquote (format "%s" extra))))))
+           (display-buffer-alist
+            (cons '("\\`\\*Org-Babel Error Output\\*\\'"
+                    (display-buffer-no-window)
+                    (allow-no-window . t))
+                  display-buffer-alist)))
       (funcall orig body params))))
 
 
