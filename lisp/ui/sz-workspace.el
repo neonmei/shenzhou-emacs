@@ -1,4 +1,4 @@
-;;; sz-workspace.el --- Workspaces (perspective) and file tree (neotree) -*- lexical-binding: t; -*-
+;;; sz-workspace.el --- Workspaces (perspective) -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Ports Doom's `SPC TAB' workspace leader onto `perspective'.  Each perspective
 ;; is a named workspace with its own buffer list and window configuration.  The
@@ -9,8 +9,6 @@
 ;; object exists as soon as this module is required -- sz-keys.el references it
 ;; as a value for the C-c TAB binding.  Leaves hold command symbols resolved at
 ;; key-press time, so binding them before perspective finishes building is safe.
-;;
-;; Neotree provides the project-rooted file sidebar (SPC p o / SPC p O).
 ;;; Code:
 
 (defvar sz-var-dir)
@@ -109,71 +107,6 @@
                        tab-bar-format-global))
 
 (tab-bar-mode 1)
-
-;;;; --- Neotree -----------------------------------------------------------------
-(use-package neotree
-  :ensure t
-  :after nerd-icons
-  :commands (neotree-toggle neotree-dir neotree-find neotree-hide
-             neo-global--window-exists-p)
-  :init
-  (setq neo-theme 'nerd-icons
-        neo-smart-open t            ; jump to current file when opening
-        neo-window-width 30
-        neo-window-fixed-size nil   ; keep manual resize
-        neo-show-updir-line nil
-        neo-mode-line-type 'none
-        neo-banner-message nil
-        neo-autorefresh nil
-        neo-show-hidden-files nil
-        neo-confirm-create-file (lambda (&rest _) t)
-        neo-confirm-create-directory (lambda (&rest _) t)
-        neo-hidden-regexp-list
-        '("^\\."                     ; dotfiles/dirs (.git, .direnv, ...)
-          "~$" "^#.*#$"              ; backups / autosaves
-          "\\.\\(pyc\\|elc\\|o\\|class\\)$"
-          "^\\(node_modules\\|vendor\\)$"))
-  :config
-  ;; Doom-style visual polish in the neo window: highlight the current line,
-  ;; hide the block cursor.
-  (add-hook 'neo-after-create-hook
-            (lambda (&rest _)
-              (hl-line-mode 1)
-              (setq-local cursor-type nil)))
-
-  ;; Under meow, run the neotree buffer in motion state so its own keymap
-  ;; (RET/TAB open, q hide, H toggle hidden, g refresh) stays live while
-  ;; meow-motion's j/k move the tree and SPC remains the leader.
-  (with-eval-after-load 'meow
-    (add-to-list 'meow-mode-state-list '(neotree-mode . motion))))
-
-(defun sz/neotree-set-theme (&rest _)
-  "Set `neo-theme' from the selected frame's display capabilities."
-  (setq neo-theme (if (display-graphic-p) 'nerd-icons 'arrow)))
-
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook #'sz/neotree-set-theme)
-  (add-hook 'elpaca-after-init-hook #'sz/neotree-set-theme))
-
-(defun sz/neotree-project-root ()
-  "Project root of the current buffer, or `default-directory'."
-  (or (when-let ((proj (project-current))) (project-root proj))
-      default-directory))
-
-(defun sz/neotree-open ()
-  "Open neotree at the project root and reveal the current file."
-  (interactive)
-  (let ((file buffer-file-name)
-        (root (sz/neotree-project-root)))
-    (neotree-dir root)
-    (when file (neotree-find file))))
-
-(defun sz/neotree-toggle ()
-  "Toggle a project-rooted neotree sidebar, revealing the current file."
-  (interactive)
-  (if (neo-global--window-exists-p)
-      (neotree-hide)
-    (sz/neotree-open)))
 
 (provide 'sz-workspace)
 ;;; sz-workspace.el ends here

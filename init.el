@@ -83,7 +83,8 @@
     sz-encrypt               ; gpg and epa configuration
     ;; ui/
     sz-ui                    ; theme, fonts, modeline, circadian
-    sz-workspace             ; SPC TAB workspaces (before sz-keys: C-c TAB refs its map), neotree
+    sz-workspace             ; SPC TAB workspaces (before sz-keys: C-c TAB refs its map)
+    sz-neotree               ; project file sidebar
     sz-dashboard
     ;; editor/
     sz-completion            ; vertico/corfu stack, yasnippet

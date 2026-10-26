@@ -103,5 +103,28 @@
         (message "Yanked: %s" relative-path))
     (user-error "Buffer is not visiting a file")))
 
+;;;; --- File operations (SPC f R / D / C) ---------------------------------------
+;; Rename and mkdir are built-in interactive commands (`rename-visited-file',
+;; `make-directory'); only delete and copy need a wrapper.
+
+(defun sz/file/delete ()
+  "Delete the file visited by the current buffer, then kill the buffer."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (unless file (user-error "Buffer is not visiting a file"))
+    (when (yes-or-no-p (format "Delete %s? " file))
+      (delete-file file delete-by-moving-to-trash)
+      (kill-buffer))))
+
+(defun sz/file/copy (new-path)
+  "Copy the current buffer's file to NEW-PATH and visit the copy."
+  (interactive
+   (progn
+     (unless (buffer-file-name) (user-error "Buffer is not visiting a file"))
+     (list (read-file-name "Copy to: " nil nil nil
+                           (file-name-nondirectory (buffer-file-name))))))
+  (copy-file (buffer-file-name) new-path 1)
+  (find-file new-path))
+
 (provide 'sz-editing)
 ;;; sz-editing.el ends here

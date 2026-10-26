@@ -102,7 +102,7 @@
 (global-display-line-numbers-mode 1)
 (dolist (h '(term-mode-hook vterm-mode-hook eat-mode-hook eshell-mode-hook shell-mode-hook
              pdf-view-mode-hook doc-view-mode-hook image-mode-hook
-             treemacs-mode-hook compilation-mode-hook dired-mode-hook
+             neotree-mode-hook compilation-mode-hook dired-mode-hook
              vundo-mode-hook Custom-mode-hook help-mode-hook))
   (add-hook h (lambda () (display-line-numbers-mode -1))))
 

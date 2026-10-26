@@ -35,8 +35,8 @@
 (define-key sz-project-map "e" #'eat-project-other-window)
 (define-key sz-project-map "r" #'sz/go/run)
 (define-key sz-project-map "g" #'sz/git/project-status)
-(define-key sz-project-map "o" #'sz/neotree-toggle)
-(define-key sz-project-map "O" #'sz/neotree-open)   ; reveal current file / re-root
+(define-key sz-project-map "o" #'sz/neotree/toggle)
+(define-key sz-project-map "O" #'sz/neotree/open)   ; reveal current file / re-root
 (define-key sz-project-map "a" sz-agent-map)   ; SPC p a -> AI agents (see below)
 
 ;;;; --- SPC f : files -----------------------------------------------------------
@@ -47,6 +47,10 @@
 (define-key sz-file-map "s" #'save-buffer)
 (define-key sz-file-map "y" #'sz/yank-file-path)
 (define-key sz-file-map "Y" #'sz/yank-file-path-relative)
+(define-key sz-file-map "R" #'rename-visited-file)
+(define-key sz-file-map "D" #'sz/file/delete)
+(define-key sz-file-map "C" #'sz/file/copy)
+(define-key sz-file-map "U" #'make-directory)
 
 ;;;; --- SPC n : notes  (n r -> vulpea) ------------------------------------------
 
@@ -199,6 +203,10 @@
     "C-c f" "files"    "SPC f" "files"
     "C-c f y" "yank file path" "SPC f y" "yank file path"
     "C-c f Y" "yank file path (relative)" "SPC f Y" "yank file path (relative)"
+    "C-c f R" "rename this file" "SPC f R" "rename this file"
+    "C-c f D" "delete this file" "SPC f D" "delete this file"
+    "C-c f C" "copy this file"   "SPC f C" "copy this file"
+    "C-c f U" "make directory"   "SPC f U" "make directory"
     "C-c n" "notes"    "SPC n" "notes"
     "C-c n r" "vulpea" "SPC n r" "vulpea"
     "C-c n r r" "refile" "SPC n r r" "refile"
