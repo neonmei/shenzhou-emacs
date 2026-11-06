@@ -127,9 +127,12 @@ DATE property); the journal note is created if it does not exist."
     (let ((note (vulpea-journal-note time)))
       (org-cut-subtree)
       (vulpea-utils-with-note-sync note
-        (goto-char (point-max))
-        (unless (bolp) (insert "\n"))
-        (org-paste-subtree 1))
+        (let ((lvl (or (org-current-level) 0)))
+          (if (zerop lvl)
+              (goto-char (point-max))
+            (org-end-of-subtree t t))
+          (unless (bolp) (insert "\n"))
+          (org-paste-subtree (1+ lvl))))
       (message "Refiled to %s" (vulpea-note-title note)))))
 
 (use-package vulpea-journal
@@ -137,16 +140,17 @@ DATE property); the journal note is created if it does not exist."
   :after (vulpea vulpea-ui)
   :config
   (setq vulpea-journal-tag "gongzuo"
-        ;; Function form so :head's #+date tracks the *entry* date even when
-        ;; backfilling a past day via `vulpea-journal-date'.
         vulpea-journal-default-template
-        (lambda (date)
-          (list
-           :file-name (format-time-string "tier2/dailies/gongzuo/%Y/%m/%Y-%m-%d.org" date)
-           :title     (format-time-string "BG-%Y-%m-%d" date)
-           :tags      '("gongzuo" "meet")
-           :head      (format-time-string "#+date: %Y-%m-%d" date)
-           :body      "* Agenda\n\n* Notes\n")))
+        (vulpea-journal-template-monthly
+         :file-name    "tier2/dailies/gongzuo/%Y/%m.org"
+         :title        "BG-%Y-%m"
+         :tags         '("gongzuo" "meet")
+         :head         "#+date: %Y-%m-01"
+         :entry-title  "%d %A"
+         :entry-groups '("week %V")
+         :entry-order  'oldest-first
+         :aliases      '("BG-%Y-%m-%d")
+         :body         "*** Agenda\n\n*** Notes\n"))
   (vulpea-journal-setup))
 
 ;;;; --- Org completion-at-point (vulpea-capf) -----------------------------------
