@@ -388,6 +388,10 @@ prefix argument, read FILE and sweep that file alone."
                    (file+headline ,(expand-file-name "roam/tier2/agenda/next.org" sz-org)
                                   "Captured")
                    ,(concat "* NEXT %?\n" "/Entered on/ %U"))
+                  ("gG" "Inbox, tier2" entry
+                   (file+headline ,(expand-file-name "roam/tier2/agenda/inbox.org" sz-org)
+                                  "Captured")
+                   ,(concat "* TODO %?\n" "/Entered on/ %U"))
                   ("v" "Vulpea note (tiered)" plain
                    (file sz/vulpea/tiered-target) "%?" :unnarrowed t)
                   ("p" "Postmortem (RCA)" plain
@@ -399,6 +403,16 @@ prefix argument, read FILE and sweep that file alone."
                     (lambda () (expand-file-name (format-time-string "english/%Y/%m/%Y-%m-%d.org") sz-dailies))
                     "#+title: ES-%<%Y-%m-%d>\n#+filetags: :english:language:meet:\n")
                    "* %?")))))
+
+(defun sz/org/capture-next ()
+  "Capture a NEXT task straight into tier2's next.org, asking no tier."
+  (interactive)
+  (org-capture nil "gg"))
+
+(defun sz/org/capture-inbox ()
+  "Capture a TODO straight into tier2's inbox.org, asking no tier."
+  (interactive)
+  (org-capture nil "gG"))
 
 ;;;; --- Pomodoro ----------------------------------------------------------------
 

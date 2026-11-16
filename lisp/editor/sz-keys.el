@@ -59,6 +59,8 @@
 (define-key sz-notes-map "a" #'org-agenda)
 (define-key sz-notes-map "i" #'org-id-get-create)  ; org ID for heading at point
 (define-key sz-notes-map "A" #'sz/org/archive-completed)
+(define-key sz-notes-map "t" #'sz/org/capture-next)   ; GTD capture, tier2
+(define-key sz-notes-map "T" #'sz/org/capture-inbox)
 
 (define-key sz-vulpea-map "f" #'sz/vulpea/find)
 (define-key sz-vulpea-map "i" #'vulpea-insert)
@@ -226,7 +228,9 @@
     "C-c n i" "org-id-get-create" "SPC n i" "org-id-get-create"
     "C-c n A" "archive completed" "SPC n A" "archive completed"
     "C-c g" "git"      "SPC g" "git"
-    "C-c g h" "github" "SPC g h" "github"))
+    "C-c g h" "github" "SPC g h" "github"
+    "C-c n t" "capture next"  "SPC n t" "capture next"
+    "C-c n T" "capture inbox" "SPC n T" "capture inbox"))
 
 
 (provide 'sz-keys)
